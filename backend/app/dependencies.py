@@ -1,9 +1,15 @@
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jwt import PyJWKClient
 import jwt
 
+from app.config import SUPABASE_URL
+
 security = HTTPBearer()
+
+jwks_client = PyJWKClient(
+    f"{SUPABASE_URL}/auth/v1/.well-known/jwks.json"
+)
 
 
 async def get_current_user(
@@ -11,22 +17,13 @@ async def get_current_user(
 ) -> str:
     """
     Verify the Supabase JWT and return the user_id (sub claim).
-
-    Supabase currently uses ES256/ECC signing keys.
-    The public key is fetched from Supabase's JWKS endpoint.
     """
 
     token = credentials.credentials
 
     try:
-        # Get Supabase's public signing key
-        jwks_client = PyJWKClient(
-            f"{SUPABASE_URL}/auth/v1/.well-known/jwks.json"
-        )
-
         signing_key = jwks_client.get_signing_key_from_jwt(token)
 
-        # Verify JWT
         payload = jwt.decode(
             token,
             signing_key.key,
@@ -35,7 +32,7 @@ async def get_current_user(
             issuer=f"{SUPABASE_URL}/auth/v1",
         )
 
-        user_id = payload.get("sub")
+        user_id: str = payload.get("sub")
 
         if user_id is None:
             raise HTTPException(
