@@ -1,0 +1,22 @@
+# ============================================================
+# BIZFLOW — Render Blueprint
+# ============================================================
+# This file auto-configures your backend on Render.
+# When you connect your repo, Render reads this and sets
+# up the service for you — no manual dashboard config needed.
+# ============================================================
+
+services:
+  - type: web
+    name: bizflow-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SUPABASE_URL
+        sync: false          # you'll set this manually in Render dashboard
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SUPABASE_JWT_SECRET
+        sync: false

@@ -1,0 +1,33 @@
+# ============================================================
+# BIZFLOW — .gitignore
+# ============================================================
+
+# ---- Environment variables (secrets!) ----
+.env
+.env.local
+.env.production
+
+# ---- Python / Backend ----
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+backend/venv/
+*.egg-info/
+
+# ---- Node / Frontend ----
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db
+
+# ---- IDE ----
+.vscode/
+.idea/
+
+# ---- Old Flask project ----
+_old_flask/

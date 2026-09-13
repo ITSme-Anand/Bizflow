@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* ============================================================
+   BIZFLOW — DESIGN TOKENS (Tailwind v4 CSS-first config)
+   ============================================================ */
+
+@theme {
+  /* Brand colors */
+  --color-brand-50: oklch(0.97 0.02 275);
+  --color-brand-100: oklch(0.93 0.04 275);
+  --color-brand-200: oklch(0.87 0.08 275);
+  --color-brand-300: oklch(0.78 0.12 275);
+  --color-brand-400: oklch(0.68 0.16 275);
+  --color-brand-500: oklch(0.55 0.19 275);
+  --color-brand-600: oklch(0.48 0.19 275);
+  --color-brand-700: oklch(0.42 0.17 275);
+
+  /* Accent / Teal */
+  --color-accent-50: oklch(0.97 0.02 175);
+  --color-accent-100: oklch(0.93 0.04 175);
+  --color-accent-200: oklch(0.87 0.06 175);
+  --color-accent-300: oklch(0.78 0.09 175);
+  --color-accent-400: oklch(0.65 0.12 175);
+  --color-accent-500: oklch(0.52 0.12 175);
+  --color-accent-600: oklch(0.45 0.11 175);
+  --color-accent-700: oklch(0.38 0.09 175);
+
+  /* Neutral surface colors */
+  --color-surface-50: #fafbfc;
+  --color-surface-100: #f4f6f8;
+  --color-surface-200: #eaecf0;
+  --color-surface-300: #d0d5dd;
+  --color-surface-400: #98a2b3;
+  --color-surface-500: #667085;
+  --color-surface-600: #475467;
+  --color-surface-700: #344054;
+  --color-surface-800: #1d2939;
+  --color-surface-900: #101828;
+
+  /* Semantic */
+  --color-success: oklch(0.62 0.15 155);
+  --color-warning: oklch(0.72 0.15 70);
+  --color-danger: oklch(0.58 0.18 25);
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-card-hover: 0 8px 24px rgba(16, 24, 40, 0.08), 0 2px 6px rgba(16, 24, 40, 0.04);
+  --shadow-elevated: 0 12px 40px rgba(16, 24, 40, 0.12);
+
+  /* Border radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+}
+
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-surface-50);
+  color: var(--color-surface-900);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out both;
+}
+
+/* Staggered children animation */
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 80ms; }
+.stagger > *:nth-child(3) { animation-delay: 160ms; }
+.stagger > *:nth-child(4) { animation-delay: 240ms; }
+.stagger > *:nth-child(5) { animation-delay: 320ms; }
+.stagger > *:nth-child(6) { animation-delay: 400ms; }
+
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-300);
+  border-radius: 3px;
+}
