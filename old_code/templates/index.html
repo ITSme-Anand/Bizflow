@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BizFlow - Smart Business Management</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='landing.css') }}?v=1000">
+</head>
+
+<body>
+
+<header>
+
+    <a href="{{ url_for('index') }}" class="logo">
+        Biz<span>Flow</span>
+    </a>
+
+    <nav>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="{{ url_for('login') }}" class="login-btn">
+            Login
+        </a>
+    </nav>
+
+</header>
+
+
+<main>
+
+    <!-- ================= HERO SECTION ================= -->
+
+    <section class="hero">
+
+        <div class="hero-text">
+
+            <div class="small-title">
+                SMART MANAGEMENT FOR SMALL BUSINESSES
+            </div>
+
+            <h1>
+                Run Your Business.
+                <span>Simply.</span>
+            </h1>
+
+            <p class="description">
+                BizFlow brings sales, expenses, inventory and business
+                analysis together in one simple platform — helping local
+                businesses stay organised and make better decisions.
+            </p>
+
+            <div class="buttons">
+
+                <a href="{{ url_for('signup') }}" class="primary-btn">
+                    Get Started
+                </a>
+
+                <a href="#features" class="secondary-btn">
+                    Explore Features
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PRODUCT PREVIEW ================= -->
+
+        <div class="dashboard-card">
+
+            <p>YOUR BUSINESS AT A GLANCE</p>
+
+            <h2 id="landingGreeting">
+                Good Morning, Business Owner
+            </h2>
+
+            <div class="profit">
+
+                Business Insights
+
+                <small>
+                    Clear information to help you manage better
+                </small>
+
+            </div>
+
+
+            <div class="stats">
+
+                <div>
+                    <strong>Sales</strong>
+                    <small>
+                        Track daily sales
+                    </small>
+                </div>
+
+                <div>
+                    <strong>Expenses</strong>
+                    <small>
+                        Monitor spending
+                    </small>
+                </div>
+
+                <div>
+                    <strong>Inventory</strong>
+                    <small>
+                        Manage stock
+                    </small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FEATURES ================= -->
+
+    <section id="features">
+
+        <div class="dashboard-header">
+
+            <p class="small-title">
+                ONE PLATFORM. EVERYTHING YOU NEED.
+            </p>
+
+            <h2>
+                Manage Your Business
+                <span>Effortlessly</span>
+            </h2>
+
+        </div>
+
+
+        <div class="features">
+
+            <div class="feature">
+
+                <h3>
+                    Sales Tracking
+                </h3>
+
+                <p>
+                    Record daily sales and keep your business transactions
+                    organised in one place.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <h3>
+                    Expense Management
+                </h3>
+
+                <p>
+                    Track business expenses clearly and understand where
+                    your money is going.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <h3>
+                    Inventory Control
+                </h3>
+
+                <p>
+                    Monitor available stock and update quantities whenever
+                    products are added or sold.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <h3>
+                    Business Analysis
+                </h3>
+
+                <p>
+                    View monthly sales, expenses and profit to understand
+                    how your business is performing.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section id="how-it-works">
+
+        <div class="dashboard-header">
+
+            <p class="small-title">
+                SIMPLE FROM THE START
+            </p>
+
+            <h2>
+                How <span>BizFlow</span> Works
+            </h2>
+
+        </div>
+
+
+        <div class="features">
+
+            <div class="feature">
+
+                <h3>
+                    01. Create Your Account
+                </h3>
+
+                <p>
+                    Sign up and create your own secure business account.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <h3>
+                    02. Record Daily Activity
+                </h3>
+
+                <p>
+                    Add your sales, expenses and inventory as you run
+                    your business.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <h3>
+                    03. Understand Your Business
+                </h3>
+
+                <p>
+                    Use the dashboard and monthly analysis to understand
+                    your business performance.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FINAL CTA ================= -->
+
+    <section class="dashboard-box">
+
+        <h2>
+            Make Your Business
+            <span>Smarter.</span>
+        </h2>
+
+        <p>
+            Everything your local business needs, brought together
+            in one simple platform.
+        </p>
+
+        <a href="{{ url_for('signup') }}" class="primary-btn">
+            Get Started with BizFlow
+        </a>
+
+    </section>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 BizFlow. Smart management for small businesses.
+    </p>
+
+</footer>
+
+
+<!-- ================= AUTOMATIC GREETING ================= -->
+
+<script>
+
+    function updateLandingGreeting() {
+
+        const hour = new Date().getHours();
+
+        let greeting;
+
+        if (hour >= 5 && hour < 12) {
+
+            greeting = "Good Morning";
+
+        } else if (hour >= 12 && hour < 17) {
+
+            greeting = "Good Afternoon";
+
+        } else if (hour >= 17 && hour < 21) {
+
+            greeting = "Good Evening";
+
+        } else {
+
+            greeting = "Good Night";
+
+        }
+
+        document.getElementById("landingGreeting").textContent =
+            greeting + ", Business Owner";
+    }
+
+
+    updateLandingGreeting();
+
+</script>
+
+
+</body>
+</html>

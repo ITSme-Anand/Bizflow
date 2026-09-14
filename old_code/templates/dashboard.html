@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - BizFlow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}?v=3000">
+
+</head>
+
+
+<body>
+
+
+<!-- ============================================================
+     TOP NAVIGATION
+     ============================================================ -->
+
+<header class="topbar">
+
+    <a href="{{ url_for('dashboard') }}" class="brand">
+        Biz<span>Flow</span>
+    </a>
+
+
+    <nav class="main-nav">
+
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-link active">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('sales') }}"
+           class="nav-link">
+            Sales
+        </a>
+
+        <a href="{{ url_for('inventory') }}"
+           class="nav-link">
+            Inventory
+        </a>
+
+        <a href="{{ url_for('expenses') }}"
+           class="nav-link">
+            Expenses
+        </a>
+
+        <a href="{{ url_for('analysis') }}"
+           class="nav-link">
+            Analysis
+        </a>
+
+    </nav>
+
+
+    <div class="nav-right">
+
+        <a href="{{ url_for('profile') }}"
+           class="profile-btn">
+
+            <span class="profile-icon">
+                P
+            </span>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('logout') }}"
+           class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ============================================================
+     DASHBOARD
+     ============================================================ -->
+
+<main class="dashboard-container">
+
+
+    <!-- ========================================================
+         WELCOME + DATE
+         ======================================================== -->
+
+    <section class="welcome-section">
+
+        <div>
+
+            <h1>
+                {{ greeting }}, <span>{{ business_name }}</span>
+            </h1>
+
+            <p class="welcome-text">
+                Here's what's happening in your business today.
+            </p>
+
+        </div>
+
+
+        <div class="date-card">
+
+            <span class="date-label">
+                TODAY
+            </span>
+
+            <strong>
+                {{ today.strftime('%d %B %Y') }}
+            </strong>
+
+            <span>
+                {{ today.strftime('%A') }}
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================================
+         TODAY'S SUMMARY
+         ======================================================== -->
+
+    <section class="stats-grid">
+
+
+        <!-- SALES -->
+
+        <div class="premium-stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    ₹
+                </div>
+
+                <span class="stat-label">
+                    TODAY'S SALES
+                </span>
+
+            </div>
+
+            <h2>
+                ₹{{ "%.2f"|format(total_sales|float) }}
+            </h2>
+
+            <p>
+                Revenue recorded today
+            </p>
+
+        </div>
+
+
+
+        <!-- EXPENSES -->
+
+        <div class="premium-stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    −
+                </div>
+
+                <span class="stat-label">
+                    TODAY'S EXPENSES
+                </span>
+
+            </div>
+
+            <h2>
+                ₹{{ "%.2f"|format(total_expenses|float) }}
+            </h2>
+
+            <p>
+                Business expenses today
+            </p>
+
+        </div>
+
+
+
+        <!-- PROFIT -->
+
+        <div class="premium-stat-card profit-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    +
+                </div>
+
+                <span class="stat-label">
+                    TODAY'S PROFIT
+                </span>
+
+            </div>
+
+            <h2>
+                ₹{{ "%.2f"|format(profit|float) }}
+            </h2>
+
+            <p>
+                Sales minus expenses
+            </p>
+
+        </div>
+
+
+
+        <!-- INVENTORY -->
+
+        <div class="premium-stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    #
+                </div>
+
+                <span class="stat-label">
+                    CURRENT INVENTORY
+                </span>
+
+            </div>
+
+            <h2>
+                {{ inventory_count }}
+            </h2>
+
+            <p>
+                Products currently tracked
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================================
+         TODAY'S SALES + EXPENSES
+         ======================================================== -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- ====================================================
+             SALES
+             ==================================================== -->
+
+        <div class="content-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="card-kicker">
+                        TODAY'S ACTIVITY
+                    </p>
+
+                    <h3>
+                        Recent Sales
+                    </h3>
+
+                </div>
+
+
+                <a href="{{ url_for('sales') }}"
+                   class="view-link">
+                    View all →
+                </a>
+
+            </div>
+
+
+            {% if today_sales %}
+
+            <div class="table-header">
+
+                <span>S.NO</span>
+
+                <span>DATE</span>
+
+                <span>PRODUCT</span>
+
+                <span>AMOUNT</span>
+
+            </div>
+
+
+            {% for sale in today_sales[:5] %}
+
+            <div class="activity-row">
+
+                <span class="serial-number">
+                    {{ loop.index }}
+                </span>
+
+
+                <span class="activity-date">
+                    {{ sale.transaction_date.strftime('%d %b') }}
+                </span>
+
+
+                <div class="activity-details">
+
+                    <strong>
+                        {{ sale.product_name }}
+                    </strong>
+
+                    <span>
+                        {{ "%.2f"|format(sale.quantity|float) }}
+                        {{ sale.unit }}
+                    </span>
+
+                </div>
+
+
+                <span class="activity-amount">
+                    ₹{{ "%.2f"|format(sale.amount|float) }}
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    +
+                </div>
+
+                <h4>
+                    No sales recorded today
+                </h4>
+
+                <p>
+                    Add a sale to start tracking today's revenue.
+                </p>
+
+                <a href="{{ url_for('sales') }}"
+                   class="empty-action">
+                    Add Sale
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- ====================================================
+             EXPENSES
+             ==================================================== -->
+
+        <div class="content-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="card-kicker">
+                        TODAY'S ACTIVITY
+                    </p>
+
+                    <h3>
+                        Recent Expenses
+                    </h3>
+
+                </div>
+
+
+                <a href="{{ url_for('expenses') }}"
+                   class="view-link">
+                    View all →
+                </a>
+
+            </div>
+
+
+            {% if today_expenses %}
+
+            <div class="table-header">
+
+                <span>S.NO</span>
+
+                <span>DATE</span>
+
+                <span>EXPENSE</span>
+
+                <span>AMOUNT</span>
+
+            </div>
+
+
+            {% for expense in today_expenses[:5] %}
+
+            <div class="activity-row">
+
+                <span class="serial-number">
+                    {{ loop.index }}
+                </span>
+
+
+                <span class="activity-date">
+                    {{ expense.transaction_date.strftime('%d %b') }}
+                </span>
+
+
+                <div class="activity-details">
+
+                    <strong>
+                        {{ expense.expense_name }}
+                    </strong>
+
+                    <span>
+                        Business expense
+                    </span>
+
+                </div>
+
+
+                <span class="activity-amount expense-amount">
+                    ₹{{ "%.2f"|format(expense.amount|float) }}
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    +
+                </div>
+
+                <h4>
+                    No expenses recorded today
+                </h4>
+
+                <p>
+                    Add an expense to keep today's records complete.
+                </p>
+
+                <a href="{{ url_for('expenses') }}"
+                   class="empty-action">
+                    Add Expense
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================================
+         CURRENT INVENTORY
+         ======================================================== -->
+
+    <section class="inventory-dashboard-card">
+
+
+        <!-- INVENTORY HEADER -->
+
+        <div class="inventory-dashboard-header">
+
+            <div>
+
+                <p class="inventory-dashboard-kicker">
+                    STOCK OVERVIEW
+                </p>
+
+                <h2>
+                    Current Inventory
+                </h2>
+
+                <p class="inventory-dashboard-subtitle">
+                    Products currently available in your business.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('inventory') }}"
+               class="inventory-manage-btn">
+
+                Manage Inventory
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+        </div>
+
+
+
+        {% if inventory %}
+
+        <div class="inventory-dashboard-table">
+
+
+            <!-- COLUMN HEADINGS -->
+
+            <div class="inventory-dashboard-head">
+
+                <span class="inventory-col-number">
+                    S.NO
+                </span>
+
+                <span class="inventory-col-product">
+                    PRODUCT
+                </span>
+
+                <span class="inventory-col-stock">
+                    CURRENT STOCK
+                </span>
+
+                <span class="inventory-col-price">
+                    PRICE
+                </span>
+
+            </div>
+
+
+
+            <!-- INVENTORY ROWS -->
+
+            {% for item in inventory[:6] %}
+
+            <div class="inventory-dashboard-row">
+
+
+                <!-- SERIAL NUMBER -->
+
+                <div class="inventory-col-number">
+
+                    <span class="inventory-number">
+                        {{ "%02d"|format(loop.index) }}
+                    </span>
+
+                </div>
+
+
+
+                <!-- PRODUCT -->
+
+                <div class="inventory-col-product">
+
+                    <div class="inventory-product-info">
+
+                        <strong>
+                            {{ item.product_name }}
+                        </strong>
+
+                        <span>
+                            Added {{ item.created_at.strftime('%d %b %Y') }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CURRENT STOCK -->
+
+                <div class="inventory-col-stock">
+
+                    <strong>
+                        {{ "%.2f"|format(item.quantity|float) }}
+                    </strong>
+
+                    <span>
+                        {{ item.unit }}
+                    </span>
+
+                </div>
+
+
+
+                <!-- PRICE -->
+
+                <div class="inventory-col-price">
+
+                    <strong>
+                        ₹{{ "%.2f"|format(item.price|float) }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+
+        <!-- MORE ITEMS -->
+
+        {% if inventory|length > 6 %}
+
+        <div class="inventory-more">
+
+            Showing 6 of {{ inventory|length }} products.
+
+            <a href="{{ url_for('inventory') }}">
+                View complete inventory →
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+
+        {% else %}
+
+        <!-- EMPTY INVENTORY -->
+
+        <div class="inventory-empty">
+
+            <div class="inventory-empty-icon">
+                +
+            </div>
+
+            <h3>
+                No inventory added yet
+            </h3>
+
+            <p>
+                Add your products to start tracking your stock.
+            </p>
+
+            <a href="{{ url_for('inventory') }}"
+               class="inventory-add-btn">
+                Add Inventory
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ========================================================
+         BIZFLOW INSIGHT
+         ======================================================== -->
+
+    <section class="business-insight">
+
+        <div class="insight-symbol">
+            i
+        </div>
+
+
+        <div>
+
+            <p>
+                BIZFLOW INSIGHT
+            </p>
+
+            <h3>
+                Keep your daily records updated for a clearer picture
+                of your business performance.
+            </h3>
+
+        </div>
+
+
+        <a href="{{ url_for('analysis') }}">
+            View Analysis →
+        </a>
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>

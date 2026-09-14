@@ -41,15 +41,16 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 flex items-center justify-center px-4 py-8">
+    <div className="auth-shell min-h-screen flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md animate-fade-in-up">
-        <div className="bg-white rounded-2xl p-8 sm:p-10 shadow-elevated border border-surface-200/50">
+        <div className="auth-card surface-panel p-8 sm:p-10 shadow-elevated">
           {/* Logo */}
           <div className="text-2xl font-bold tracking-tight mb-1">
             Biz<span className="text-brand-500">flow</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-bold mt-6 mb-2">Create Account</h1>
+          <p className="eyebrow mt-8">A sharper start</p>
+          <h1 className="font-[Space_Grotesk] text-2xl sm:text-3xl font-bold mb-2">Create your account</h1>
           <p className="text-surface-500 text-sm mb-8">
             Set up your business on Bizflow.
           </p>
@@ -62,7 +63,7 @@ export default function Signup() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Business Name
               </label>
               <input
@@ -72,12 +73,12 @@ export default function Signup() {
                 onChange={(e) => setBusinessName(e.target.value)}
                 placeholder="Enter your business name"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Email
               </label>
               <input
@@ -87,12 +88,12 @@ export default function Signup() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Password
               </label>
               <input
@@ -102,12 +103,12 @@ export default function Signup() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Create a password"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Confirm Password
               </label>
               <input
@@ -117,7 +118,7 @@ export default function Signup() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Re-enter your password"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
 
@@ -125,7 +126,7 @@ export default function Signup() {
               id="signup-submit"
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-lg bg-accent-500 text-white text-sm font-semibold hover:bg-accent-600 transition-all duration-200 disabled:opacity-50 cursor-pointer shadow-sm hover:shadow-md"
+              className="primary-button accent-button w-full disabled:opacity-50"
             >
               {loading ? "Creating account..." : "Create Account"}
             </button>

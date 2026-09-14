@@ -2,154 +2,23 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../lib/api";
 
+const currency = (value) => `₹${Number(value || 0).toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
+
 export default function Analysis() {
   const [data, setData] = useState(null);
+  const [selectedReport, setSelectedReport] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    api
-      .get("/api/analysis")
-      .then((res) => setData(res.data))
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-7 h-7 border-3 border-brand-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  const stats = [
-    {
-      label: "Total Revenue",
-      value: `₹${data?.total_sales?.toFixed(2) ?? "0.00"}`,
-      sub: "From recorded sales",
-    },
-    {
-      label: "Total Expenses",
-      value: `₹${data?.total_expenses?.toFixed(2) ?? "0.00"}`,
-      sub: "Business spending",
-    },
-    {
-      label: "Net Profit",
-      value: `₹${data?.profit?.toFixed(2) ?? "0.00"}`,
-      sub: "Revenue − expenses",
-    },
-    {
-      label: "Products",
-      value: data?.inventory_count ?? 0,
-      sub: "In inventory",
-    },
-  ];
-
-  const getProfitMessage = () => {
-    if (data?.profit > 0)
-      return "Your recorded revenue is currently higher than your recorded expenses.";
-    if (data?.profit < 0)
-      return "Your recorded expenses are currently higher than your recorded revenue.";
-    return "Your revenue and expenses are currently equal.";
-  };
-
-  return (
-    <div className="animate-fade-in">
-      {/* Header */}
-      <div className="mb-8">
-        <p className="text-brand-500 text-xs font-semibold tracking-widest uppercase mb-2">
-          Business Analysis
-        </p>
-        <h1 className="text-2xl sm:text-3xl font-bold">
-          Understand Your <span className="text-brand-500">Business</span>
-        </h1>
-        <p className="text-surface-500 text-sm mt-2">
-          Turn your business records into simple and useful insights.
-        </p>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 stagger">
-        {stats.map((s, i) => (
-          <div
-            key={i}
-            className="bg-white rounded-xl p-5 border border-surface-200 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300 animate-fade-in-up"
-          >
-            <p className="text-surface-500 text-sm mb-2">{s.label}</p>
-            <p className="text-2xl font-bold text-accent-500">{s.value}</p>
-            <p className="text-surface-400 text-xs mt-1">{s.sub}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Detail Cards */}
-      <div className="grid sm:grid-cols-2 gap-4 mb-6">
-        <div className="bg-white rounded-xl p-5 border border-surface-200 shadow-card">
-          <h3 className="text-base font-semibold mb-3">Revenue Overview</h3>
-          <p className="text-2xl font-bold text-accent-500 mb-2">
-            ₹{data?.total_sales?.toFixed(2) ?? "0.00"}
-          </p>
-          <p className="text-surface-400 text-sm">
-            This is the total revenue generated from all sales recorded in Bizflow.
-          </p>
-        </div>
-
-        <div className="bg-white rounded-xl p-5 border border-surface-200 shadow-card">
-          <h3 className="text-base font-semibold mb-3">Expense Overview</h3>
-          <p className="text-2xl font-bold text-danger mb-2">
-            ₹{data?.total_expenses?.toFixed(2) ?? "0.00"}
-          </p>
-          <p className="text-surface-400 text-sm">
-            This represents the total amount spent on recorded business expenses.
-          </p>
-        </div>
-
-        <div className="bg-white rounded-xl p-5 border border-surface-200 shadow-card">
-          <h3 className="text-base font-semibold mb-3">Profitability</h3>
-          <p className={`text-2xl font-bold mb-2 ${data?.profit >= 0 ? "text-success" : "text-danger"}`}>
-            ₹{data?.profit?.toFixed(2) ?? "0.00"}
-          </p>
-          <p className="text-surface-400 text-sm">{getProfitMessage()}</p>
-        </div>
-
-        <div className="bg-white rounded-xl p-5 border border-surface-200 shadow-card">
-          <h3 className="text-base font-semibold mb-3">Inventory Status</h3>
-          <p className="text-2xl font-bold text-brand-500 mb-2">
-            {data?.inventory_count ?? 0}
-          </p>
-          <p className="text-surface-400 text-sm">
-            Different products currently recorded in your inventory.
-          </p>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="bg-white rounded-xl p-5 sm:p-6 border border-surface-200 shadow-card">
-        <h3 className="text-base font-semibold mb-2">Keep Your Business Updated</h3>
-        <p className="text-surface-400 text-sm mb-4">
-          Regularly update your sales, expenses and inventory to keep your business analysis accurate.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <Link
-            to="/sales"
-            className="px-5 py-2.5 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 transition-all"
-          >
-            Add Sale
-          </Link>
-          <Link
-            to="/expenses"
-            className="px-5 py-2.5 text-sm font-medium text-brand-600 border border-surface-200 rounded-lg hover:border-brand-200 hover:bg-brand-50 transition-all"
-          >
-            Add Expense
-          </Link>
-          <Link
-            to="/inventory"
-            className="px-5 py-2.5 text-sm font-medium text-brand-600 border border-surface-200 rounded-lg hover:border-brand-200 hover:bg-brand-50 transition-all"
-          >
-            Manage Inventory
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+  useEffect(() => { api.get("/api/analysis").then((response) => setData(response.data)).catch(console.error).finally(() => setLoading(false)); }, []);
+  if (loading) return <div className="flex justify-center py-24"><div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-500 border-t-transparent" /></div>;
+  const current = data?.current_period || {};
+  const previous = data?.previous_period || {};
+  const maxValue = Math.max(...(data?.monthly_reports || []).flatMap((report) => [report.sales, report.expenses]), 1);
+  const change = (value, oldValue) => oldValue ? `${Math.round(((value - oldValue) / oldValue) * 100)}%` : "New";
+  const cards = [["Current sales", currency(current.sales), change(current.sales, previous.sales), "text-brand-600"], ["Current expenses", currency(current.expenses), change(current.expenses, previous.expenses), "text-danger"], ["Current profit", currency(current.profit), change(current.profit, previous.profit), current.profit >= 0 ? "text-success" : "text-danger"], ["Profit margin", `${data?.profit_margin || 0}%`, "This month", "text-accent-600"]];
+  return <div className="animate-fade-in">
+    <div className="page-heading"><div><p className="eyebrow">Business analysis</p><h1>Make the next move wisely.</h1><p>Compare this month with the previous one and spot what deserves attention.</p></div><div className="date-chip"><span>Current period</span><strong>{new Date().toLocaleDateString(undefined, { month: "long", year: "numeric" })}</strong></div></div>
+    <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{cards.map(([label, value, note, color]) => <div className="stat-panel surface-panel" key={label}><p className="stat-label">{label}</p><p className={`stat-value ${color}`}>{value}</p><p className="stat-note">{note} vs previous month</p></div>)}</div>
+    <div className="mb-6 grid gap-5 lg:grid-cols-[1.45fr_0.85fr]"><section className="surface-panel p-5"><div className="section-title"><div><h2>Monthly performance</h2><span>Sales and expenses across the last six months</span></div><span>Sales / Expenses</span></div><div className="bar-chart">{data?.monthly_reports?.map((report) => <div className="flex h-full flex-1 flex-col justify-end" key={`${report.year}-${report.month}`}><div className="bar-group"><div className="bar" style={{ height: `${Math.max((report.sales / maxValue) * 100, 2)}%` }} title={`Sales ${currency(report.sales)}`} /><div className="bar expense" style={{ height: `${Math.max((report.expenses / maxValue) * 100, 2)}%` }} title={`Expenses ${currency(report.expenses)}`} /></div><p className="bar-label">{report.label}</p></div>)}</div><div className="mt-4 flex gap-4 text-xs text-surface-500"><span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-brand-400" />Sales</span><span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-accent-400" />Expenses</span></div></section><section className={`pulse surface-panel ${data?.pulse?.tone || "neutral"}`}><p className="pulse-status text-brand-600">Business pulse · {data?.pulse?.status}</p><h2>{data?.pulse?.title}</h2><p>{data?.pulse?.message}</p><Link to="/dashboard" className="mt-5 inline-block text-xs font-bold text-brand-600 hover:underline">Review today's activity →</Link></section></div>
+    <section className="surface-panel p-5"><div className="section-title"><div><h2>Monthly reports</h2><span>Select a month to inspect its totals</span></div></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{data?.monthly_reports?.map((report) => <button type="button" onClick={() => setSelectedReport(report)} className="rounded-lg bg-surface-50 p-4 text-left transition hover:bg-brand-50" key={`${report.year}-${report.month}`}><p className="text-xs font-bold uppercase tracking-wider text-surface-400">{report.label} {report.year}</p><p className="mt-2 text-sm font-bold text-surface-800">Sales {currency(report.sales)}</p><p className="mt-1 text-xs text-surface-500">Expenses {currency(report.expenses)} · Profit {currency(report.profit)}</p></button>)}</div>{selectedReport && <div className="mt-4 rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm text-surface-700"><strong>{selectedReport.label} {selectedReport.year}</strong> recorded {currency(selectedReport.sales)} in sales, {currency(selectedReport.expenses)} in expenses, and {currency(selectedReport.profit)} profit.</div>}</section>
+  </div>;
 }

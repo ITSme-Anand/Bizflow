@@ -51,26 +51,22 @@ export default function Sales() {
   return (
     <div className="animate-fade-in">
       {/* Header */}
-      <div className="mb-8">
-        <p className="text-brand-500 text-xs font-semibold tracking-widest uppercase mb-2">
+      <div className="page-heading">
+        <div><p className="eyebrow">
           Sales Management
-        </p>
-        <h1 className="text-2xl sm:text-3xl font-bold">
-          Track Your <span className="text-brand-500">Sales</span>
-        </h1>
-        <p className="text-surface-500 text-sm mt-2">
+        </p><h1>Track your sales.</h1><p>
           Record and monitor your business sales in one place.
-        </p>
+        </p></div>
       </div>
 
       {/* Add Sale Form */}
-      <div className="bg-white rounded-xl p-5 sm:p-6 border border-surface-200 shadow-card mb-6">
-        <h3 className="text-base font-semibold mb-4">Add New Sale</h3>
+      <div className="form-panel surface-panel mb-6">
+        <h2>Add New Sale</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Product Name
               </label>
               <input
@@ -79,12 +75,12 @@ export default function Sales() {
                 onChange={(e) => setForm({ ...form, product_name: e.target.value })}
                 placeholder="Enter product name"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Quantity
               </label>
               <input
@@ -95,19 +91,19 @@ export default function Sales() {
                 min="0"
                 step="0.01"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Unit
               </label>
               <select
                 value={form.unit}
                 onChange={(e) => setForm({ ...form, unit: e.target.value })}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all bg-white"
+                className="form-input"
               >
                 {UNITS.map((u) => (
                   <option key={u} value={u}>
@@ -118,7 +114,7 @@ export default function Sales() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Total Amount
               </label>
               <input
@@ -129,7 +125,7 @@ export default function Sales() {
                 min="0"
                 step="0.01"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
           </div>
@@ -137,7 +133,7 @@ export default function Sales() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full sm:w-auto px-6 py-3 rounded-lg bg-accent-500 text-white text-sm font-semibold hover:bg-accent-600 transition-all duration-200 disabled:opacity-50 cursor-pointer shadow-sm hover:shadow-md"
+            className="primary-button accent-button w-full sm:w-auto"
           >
             {submitting ? "Adding..." : "Add Sale"}
           </button>
@@ -145,8 +141,8 @@ export default function Sales() {
       </div>
 
       {/* Sales List */}
-      <div className="bg-white rounded-xl p-5 sm:p-6 border border-surface-200 shadow-card">
-        <h3 className="text-base font-semibold mb-4">Recent Sales</h3>
+      <div className="surface-panel p-5 sm:p-6">
+        <div className="section-title"><h2>Recent Sales</h2><span>Newest first</span></div>
 
         {loading ? (
           <div className="flex justify-center py-8">
@@ -162,7 +158,7 @@ export default function Sales() {
                 <div>
                   <p className="font-medium text-sm">{sale.product_name}</p>
                   <p className="text-surface-400 text-xs mt-0.5">
-                    Quantity: {sale.quantity} {sale.unit}
+                    {sale.sale_date ? new Date(sale.sale_date).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "Date unavailable"} · Quantity: {sale.quantity} {sale.unit}
                   </p>
                 </div>
                 <span className="text-accent-500 font-bold text-sm">

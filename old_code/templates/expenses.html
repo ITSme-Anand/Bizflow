@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Expenses - BizFlow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ============================================================
+     TOP NAVIGATION
+     ============================================================ -->
+
+<header class="topbar">
+
+    <a href="{{ url_for('dashboard') }}"
+       class="brand">
+
+        Biz<span>Flow</span>
+
+    </a>
+
+
+    <nav class="main-nav">
+
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-link">
+
+            Dashboard
+
+        </a>
+
+
+        <a href="{{ url_for('sales') }}"
+           class="nav-link">
+
+            Sales
+
+        </a>
+
+
+        <a href="{{ url_for('inventory') }}"
+           class="nav-link">
+
+            Inventory
+
+        </a>
+
+
+        <a href="{{ url_for('expenses') }}"
+           class="nav-link active">
+
+            Expenses
+
+        </a>
+
+
+        <a href="{{ url_for('analysis') }}"
+           class="nav-link">
+
+            Analysis
+
+        </a>
+
+    </nav>
+
+
+    <div class="nav-right">
+
+        <a href="{{ url_for('profile') }}"
+           class="profile-btn">
+
+            <span class="profile-icon">
+                P
+            </span>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('logout') }}"
+           class="logout-btn">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+
+<main class="expenses-page">
+
+
+    <!-- ========================================================
+         PAGE HEADER
+         ======================================================== -->
+
+    <section class="expenses-header">
+
+        <div>
+
+            <p class="expenses-eyebrow">
+                EXPENSE MANAGEMENT
+            </p>
+
+
+            <h1>
+                Control Your <span>Expenses</span>
+            </h1>
+
+
+            <p class="expenses-description">
+                Record and monitor your business spending in one place.
+            </p>
+
+        </div>
+
+
+        <div class="expenses-summary-card">
+
+            <span class="expenses-summary-label">
+                RECENT RECORDS
+            </span>
+
+
+            <strong>
+                {{ expenses|length }}
+            </strong>
+
+
+            <small>
+                Expenses recorded
+            </small>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================================
+         ADD NEW EXPENSE
+         ======================================================== -->
+
+    <section class="expenses-card">
+
+
+        <div class="expenses-card-heading">
+
+            <div>
+
+                <p class="expenses-card-kicker">
+                    SPENDING MANAGEMENT
+                </p>
+
+
+                <h2>
+                    Add New Expense
+                </h2>
+
+            </div>
+
+
+            <div class="expenses-card-icon">
+                +
+            </div>
+
+        </div>
+
+
+
+        <form method="POST"
+              class="expenses-form">
+
+
+            <!-- EXPENSE NAME -->
+
+            <div class="expenses-field">
+
+                <label for="expense_name">
+                    Expense Name
+                </label>
+
+
+                <input
+                    type="text"
+                    id="expense_name"
+                    name="expense_name"
+                    placeholder="Enter expense name"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- AMOUNT -->
+
+            <div class="expenses-field">
+
+                <label for="amount">
+                    Amount
+                </label>
+
+
+                <div class="expenses-amount-input">
+
+                    <span>
+                        ₹
+                    </span>
+
+
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        placeholder="Enter expense amount"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- AUTOMATIC DATE -->
+
+            <div class="expense-date-note">
+
+                <div class="expense-date-icon">
+                    ✓
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Expense date recorded automatically
+                    </strong>
+
+
+                    <span>
+                        This expense will be recorded for
+                        {{ today.strftime('%d %B %Y') }}.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="expenses-submit-btn"
+            >
+
+                <span>
+                    Add Expense
+                </span>
+
+
+                <span class="expenses-submit-arrow">
+                    →
+                </span>
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- ========================================================
+         RECENT EXPENSES
+         ======================================================== -->
+
+    <section class="expenses-card recent-expenses-card">
+
+
+        <div class="expenses-card-heading">
+
+            <div>
+
+                <p class="expenses-card-kicker">
+                    TRANSACTION HISTORY
+                </p>
+
+
+                <h2>
+                    Recent Expenses
+                </h2>
+
+            </div>
+
+
+            <div class="expenses-count-badge">
+
+                {{ expenses|length }} Records
+
+            </div>
+
+        </div>
+
+
+
+        {% if expenses %}
+
+
+        <div class="expenses-table">
+
+
+            <!-- TABLE HEADER -->
+
+            <div class="expenses-row expenses-row-header">
+
+                <div>
+                    S.No
+                </div>
+
+                <div>
+                    Date
+                </div>
+
+                <div>
+                    Expense
+                </div>
+
+                <div>
+                    Amount
+                </div>
+
+            </div>
+
+
+
+            <!-- EXPENSE ITEMS -->
+
+            {% for expense in expenses %}
+
+
+            <div class="expenses-row">
+
+
+                <!-- SERIAL NUMBER -->
+
+                <div class="expenses-number">
+
+                    {{ loop.index }}
+
+                </div>
+
+
+
+                <!-- DATE -->
+
+                <div class="expenses-date">
+
+                    {{ expense.transaction_date.strftime('%d %b %Y') }}
+
+                </div>
+
+
+
+                <!-- EXPENSE NAME -->
+
+                <div class="expenses-name">
+
+                    <strong>
+                        {{ expense.expense_name }}
+                    </strong>
+
+
+                    <span>
+                        Business expense
+                    </span>
+
+                </div>
+
+
+
+                <!-- AMOUNT -->
+
+                <div class="expenses-amount">
+
+                    ₹{{ "%.2f"|format(expense.amount|float) }}
+
+                </div>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- EMPTY STATE -->
+
+        <div class="expenses-empty">
+
+            <div class="expenses-empty-icon">
+                +
+            </div>
+
+
+            <h3>
+                No expenses recorded yet
+            </h3>
+
+
+            <p>
+                Add your first business expense using the form above.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>

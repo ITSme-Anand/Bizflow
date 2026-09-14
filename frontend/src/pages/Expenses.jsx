@@ -40,26 +40,21 @@ export default function Expenses() {
   return (
     <div className="animate-fade-in">
       {/* Header */}
-      <div className="mb-8">
-        <p className="text-brand-500 text-xs font-semibold tracking-widest uppercase mb-2">
+      <div className="page-heading">
+        <div><p className="eyebrow">
           Expense Management
-        </p>
-        <h1 className="text-2xl sm:text-3xl font-bold">
-          Control Your <span className="text-brand-500">Expenses</span>
-        </h1>
-        <p className="text-surface-500 text-sm mt-2">
+        </p><h1>Keep spending in view.</h1><p>
           Record and monitor your business spending in one place.
-        </p>
+        </p></div>
       </div>
 
       {/* Add Expense Form */}
-      <div className="bg-white rounded-xl p-5 sm:p-6 border border-surface-200 shadow-card mb-6">
-        <h3 className="text-base font-semibold mb-4">Add New Expense</h3>
+      <div className="form-panel surface-panel mb-6"><h2>Add New Expense</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Expense Name
               </label>
               <input
@@ -68,12 +63,12 @@ export default function Expenses() {
                 onChange={(e) => setForm({ ...form, expense_name: e.target.value })}
                 placeholder="Enter expense name"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Amount
               </label>
               <input
@@ -84,7 +79,7 @@ export default function Expenses() {
                 min="0"
                 step="0.01"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
           </div>
@@ -92,7 +87,7 @@ export default function Expenses() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full sm:w-auto px-6 py-3 rounded-lg bg-accent-500 text-white text-sm font-semibold hover:bg-accent-600 transition-all duration-200 disabled:opacity-50 cursor-pointer shadow-sm hover:shadow-md"
+            className="primary-button accent-button w-full sm:w-auto"
           >
             {submitting ? "Adding..." : "Add Expense"}
           </button>
@@ -100,8 +95,7 @@ export default function Expenses() {
       </div>
 
       {/* Expenses List */}
-      <div className="bg-white rounded-xl p-5 sm:p-6 border border-surface-200 shadow-card">
-        <h3 className="text-base font-semibold mb-4">Recent Expenses</h3>
+      <div className="surface-panel p-5 sm:p-6"><div className="section-title"><h2>Recent Expenses</h2><span>Newest first</span></div>
 
         {loading ? (
           <div className="flex justify-center py-8">
@@ -116,7 +110,7 @@ export default function Expenses() {
               >
                 <div>
                   <p className="font-medium text-sm">{expense.expense_name}</p>
-                  <p className="text-surface-400 text-xs mt-0.5">Business expense</p>
+                  <p className="text-surface-400 text-xs mt-0.5">{expense.expense_date ? new Date(expense.expense_date).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "Date unavailable"} · Business expense</p>
                 </div>
                 <span className="text-danger font-bold text-sm">
                   ₹{parseFloat(expense.amount).toFixed(2)}

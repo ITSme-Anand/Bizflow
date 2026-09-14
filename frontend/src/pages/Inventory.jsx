@@ -83,26 +83,21 @@ export default function Inventory() {
   return (
     <div className="animate-fade-in">
       {/* Header */}
-      <div className="mb-8">
-        <p className="text-brand-500 text-xs font-semibold tracking-widest uppercase mb-2">
+      <div className="page-heading">
+        <div><p className="eyebrow">
           Inventory Management
-        </p>
-        <h1 className="text-2xl sm:text-3xl font-bold">
-          Manage Your <span className="text-brand-500">Inventory</span>
-        </h1>
-        <p className="text-surface-500 text-sm mt-2">
+        </p><h1>Know what is on the shelf.</h1><p>
           Keep track of your products, stock quantities, units and prices in one place.
-        </p>
+        </p></div>
       </div>
 
       {/* Add Product Form */}
-      <div className="bg-white rounded-xl p-5 sm:p-6 border border-surface-200 shadow-card mb-6">
-        <h3 className="text-base font-semibold mb-4">Add New Product</h3>
+      <div className="form-panel surface-panel mb-6"><h2>Add New Product</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Product Name
               </label>
               <input
@@ -111,12 +106,12 @@ export default function Inventory() {
                 onChange={(e) => setForm({ ...form, product_name: e.target.value })}
                 placeholder="Enter product name"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Quantity
               </label>
               <input
@@ -127,19 +122,19 @@ export default function Inventory() {
                 min="0"
                 step="0.01"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Unit
               </label>
               <select
                 value={form.unit}
                 onChange={(e) => setForm({ ...form, unit: e.target.value })}
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all bg-white"
+                className="form-input"
               >
                 {UNITS.map((u) => (
                   <option key={u} value={u}>
@@ -150,7 +145,7 @@ export default function Inventory() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-surface-700 mb-1.5">
+              <label className="form-label">
                 Price Per Item
               </label>
               <input
@@ -161,7 +156,7 @@ export default function Inventory() {
                 min="0"
                 step="0.01"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-surface-200 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                className="form-input"
               />
             </div>
           </div>
@@ -169,7 +164,7 @@ export default function Inventory() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full sm:w-auto px-6 py-3 rounded-lg bg-accent-500 text-white text-sm font-semibold hover:bg-accent-600 transition-all duration-200 disabled:opacity-50 cursor-pointer shadow-sm hover:shadow-md"
+            className="primary-button accent-button w-full sm:w-auto"
           >
             {submitting ? "Adding..." : "Add Product"}
           </button>
@@ -177,8 +172,7 @@ export default function Inventory() {
       </div>
 
       {/* Inventory List */}
-      <div className="bg-white rounded-xl p-5 sm:p-6 border border-surface-200 shadow-card">
-        <h3 className="text-base font-semibold mb-4">Current Inventory</h3>
+      <div className="surface-panel p-5 sm:p-6"><div className="section-title"><h2>Current Inventory</h2><span>Adjust stock as it changes</span></div>
 
         {loading ? (
           <div className="flex justify-center py-8">
@@ -199,6 +193,9 @@ export default function Inventory() {
                   <div className="mt-1.5">{getStockBadge(item.quantity)}</div>
                   <p className="text-surface-400 text-xs mt-1">
                     ₹{parseFloat(item.price).toFixed(2)} per {item.unit}
+                  </p>
+                  <p className="text-surface-400 text-xs mt-1">
+                    Added {item.created_at ? new Date(item.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "recently"}
                   </p>
                 </div>
 

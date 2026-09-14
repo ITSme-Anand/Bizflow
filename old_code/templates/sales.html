@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sales - BizFlow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <!-- BRAND -->
+    <a href="{{ url_for('dashboard') }}" class="brand">
+        Biz<span>Flow</span>
+    </a>
+
+    <!-- NAVIGATION -->
+    <nav class="main-nav">
+
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-link">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('sales') }}"
+           class="nav-link active">
+            Sales
+        </a>
+
+        <a href="{{ url_for('inventory') }}"
+           class="nav-link">
+            Inventory
+        </a>
+
+        <a href="{{ url_for('expenses') }}"
+           class="nav-link">
+            Expenses
+        </a>
+
+        <a href="{{ url_for('analysis') }}"
+           class="nav-link">
+            Analysis
+        </a>
+
+    </nav>
+
+    <!-- RIGHT SIDE -->
+    <div class="nav-right">
+
+        <a href="{{ url_for('profile') }}"
+           class="profile-btn">
+            <span class="profile-icon">P</span>
+            <span>Profile</span>
+        </a>
+
+        <a href="{{ url_for('logout') }}"
+           class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="sales-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <section class="sales-header">
+
+        <div>
+
+            <p class="sales-eyebrow">
+                SALES MANAGEMENT
+            </p>
+
+            <h1>
+                Record Your <span>Sales</span>
+            </h1>
+
+            <p class="sales-description">
+                Add and manage your business sales in one place.
+            </p>
+
+        </div>
+
+        <div class="sales-date-card">
+
+            <span class="sales-date-label">
+                TODAY
+            </span>
+
+            <strong>
+                {{ today.strftime('%A') }}
+            </strong>
+
+            <small>
+                {{ today.strftime('%d %B %Y') }}
+            </small>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ADD NEW SALE
+         ===================================================== -->
+
+    <section class="sales-card">
+
+        <div class="sales-card-heading">
+
+            <div>
+                <p class="sales-card-kicker">
+                    NEW TRANSACTION
+                </p>
+
+                <h2>
+                    Add New Sale
+                </h2>
+            </div>
+
+            <div class="sales-card-icon">
+                +
+            </div>
+
+        </div>
+
+
+        <form method="POST"
+              class="sales-form">
+
+            <!-- PRODUCT -->
+            <div class="sales-field">
+
+                <label for="product_name">
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="product_name"
+                    name="product_name"
+                    placeholder="Enter product name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- QUANTITY -->
+            <div class="sales-field">
+
+                <label for="quantity">
+                    Quantity
+                </label>
+
+                <input
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                    placeholder="Enter quantity"
+                    min="0"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+
+            <!-- UNIT -->
+            <div class="sales-field">
+
+                <label for="unit">
+                    Unit
+                </label>
+
+                <input
+                    type="text"
+                    id="unit"
+                    name="unit"
+                    placeholder="kg, L, pieces..."
+                    required
+                >
+
+            </div>
+
+
+            <!-- AMOUNT -->
+            <div class="sales-field">
+
+                <label for="amount">
+                    Total Amount
+                </label>
+
+                <div class="amount-input">
+
+                    <span>₹</span>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        placeholder="Enter total sale amount"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- DATE INFO -->
+            <div class="automatic-date-note">
+
+                <div class="automatic-date-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <strong>
+                        Sale date recorded automatically
+                    </strong>
+
+                    <span>
+                        This sale will be recorded for
+                        {{ today.strftime('%d %B %Y') }}.
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+            <button
+                type="submit"
+                class="sales-submit-btn"
+            >
+                <span>Add Sale</span>
+                <span class="submit-arrow">→</span>
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         RECENT SALES
+         ===================================================== -->
+
+    <section class="sales-card recent-sales-card">
+
+        <div class="sales-card-heading">
+
+            <div>
+
+                <p class="sales-card-kicker">
+                    TRANSACTION HISTORY
+                </p>
+
+                <h2>
+                    Recent Sales
+                </h2>
+
+            </div>
+
+            <div class="sales-count-badge">
+                {{ sales|length }} Records
+            </div>
+
+        </div>
+
+
+        {% if sales %}
+
+        <div class="sales-table">
+
+            <!-- TABLE HEADER -->
+
+            <div class="sales-row sales-row-header">
+
+                <div>
+                    S.No
+                </div>
+
+                <div>
+                    Date
+                </div>
+
+                <div>
+                    Product
+                </div>
+
+                <div>
+                    Amount
+                </div>
+
+            </div>
+
+
+            <!-- SALES -->
+
+            {% for sale in sales %}
+
+            <div class="sales-row">
+
+                <div class="sales-number">
+                    {{ loop.index }}
+                </div>
+
+
+                <div class="sales-date">
+
+                    {{ sale.transaction_date.strftime('%d %b %Y') }}
+
+                </div>
+
+
+                <div class="sales-product">
+
+                    <strong>
+                        {{ sale.product_name }}
+                    </strong>
+
+                    <span>
+                        {{ sale.quantity }} {{ sale.unit }}
+                    </span>
+
+                </div>
+
+
+                <div class="sales-amount">
+
+                    ₹{{ "%.2f"|format(sale.amount|float) }}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="sales-empty">
+
+            <div class="sales-empty-icon">
+                +
+            </div>
+
+            <h3>
+                No sales recorded yet
+            </h3>
+
+            <p>
+                Add your first sale using the form above.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+</body>
+</html>

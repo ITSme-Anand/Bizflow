@@ -81,9 +81,7 @@ export default function Landing() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-surface-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="text-xl font-bold tracking-tight">
-            Biz<span className="text-brand-500">flow</span>
-          </div>
+          <div className="brand-mark"><span>Bizflow</span></div>
 
           <nav className="hidden sm:flex items-center gap-6">
             <a href="#features" className="text-sm text-surface-500 hover:text-surface-800 transition-colors">
@@ -108,31 +106,32 @@ export default function Landing() {
 
       <main>
         {/* Hero */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
+        <section className="hero-shell">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
             {/* Hero Text */}
             <div className="flex-1 max-w-2xl animate-fade-in-up">
-              <p className="text-brand-500 text-xs sm:text-sm font-semibold tracking-widest uppercase mb-4">
+              <p className="hero-kicker mb-5">
                 Smart Business Management
               </p>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+              <h1 className="hero-title mb-7">
                 Run Your Business{" "}
-                <span className="text-brand-500">Smarter.</span>
+                <span>Smarter.</span>
               </h1>
-              <p className="text-surface-500 text-base sm:text-lg leading-relaxed mb-8 max-w-xl">
+              <p className="max-w-xl text-base leading-relaxed text-surface-600 sm:text-lg mb-8">
                 Bizflow brings sales, expenses, inventory and business analysis
                 together in one simple platform.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link
                   to="/signup"
-                  className="px-6 py-3 text-sm font-medium text-white bg-brand-500 rounded-xl hover:bg-brand-600 transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-0.5"
+                  className="primary-button px-6 py-3"
                 >
                   Get Started
                 </Link>
                 <a
                   href="#features"
-                  className="px-6 py-3 text-sm font-medium text-brand-600 bg-white border border-surface-200 rounded-xl hover:border-brand-200 hover:bg-brand-50 transition-all duration-200"
+                  className="primary-button bg-white text-brand-600 border border-brand-200 hover:bg-brand-50"
                 >
                   Explore Features
                 </a>
@@ -141,21 +140,22 @@ export default function Landing() {
 
             {/* Preview Card */}
             <div className="w-full max-w-sm animate-fade-in-up" style={{ animationDelay: "200ms" }}>
-              <div className="bg-white rounded-2xl p-8 shadow-elevated border border-surface-200/50">
+              <div className="hero-preview rounded-2xl p-8">
                 <p className="text-surface-400 text-xs tracking-widest uppercase mb-1">
                   Your Business Hub
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-                  All Your Business Data
+                <h2 className="relative text-2xl sm:text-3xl font-bold mb-2">
+                  One clear view of the work.
                 </h2>
-                <p className="text-accent-500 text-sm font-medium mb-6">
+                <p className="relative text-accent-300 text-sm font-medium mb-8">
                   Track • Manage • Analyse
                 </p>
-                <div className="flex gap-8">
+                <div className="relative mb-8"><span className="hero-preview-value">₹24,860</span><span className="ml-2 text-xs text-white/50">this month</span></div>
+                <div className="relative flex gap-6 border-t border-white/15 pt-5">
                   {["Sales", "Expenses", "Inventory"].map((label, i) => (
                     <div key={i} className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-surface-800">{label}</span>
-                      <span className="text-xs text-surface-400">
+                      <span className="text-sm font-semibold text-white">{label}</span>
+                      <span className="text-xs text-white/50">
                         {["Track", "Control", "Manage"][i]}
                       </span>
                     </div>
@@ -164,18 +164,20 @@ export default function Landing() {
               </div>
             </div>
           </div>
+          </div>
         </section>
 
         {/* Features */}
-        <section id="features" className="scroll-mt-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
+        <section id="features" className="feature-band scroll-mt-20 px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+          <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 animate-fade-in-up">
-            <p className="text-brand-500 text-xs sm:text-sm font-semibold tracking-widest uppercase mb-4">
+            <p className="text-accent-300 text-xs sm:text-sm font-semibold tracking-widest uppercase mb-4">
               Everything in One Place
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Built for <span className="text-brand-500">Small Businesses</span>
+              Built for <span className="text-accent-300">Small Businesses</span>
             </h2>
-            <p className="text-surface-500 text-base sm:text-lg max-w-2xl mx-auto">
+            <p className="feature-copy text-base sm:text-lg max-w-2xl mx-auto">
               Replace scattered notebooks and separate records with one
               connected business management system.
             </p>
@@ -185,16 +187,16 @@ export default function Landing() {
             {features.map((f, i) => (
               <div
                 key={i}
-                className="bg-white rounded-xl p-6 border border-surface-200 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
+                className="feature-item rounded-xl p-6 border shadow-card hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
               >
-                <div className="w-10 h-10 rounded-lg bg-brand-50 text-brand-500 flex items-center justify-center mb-4">
+                <div className="w-10 h-10 rounded-lg bg-accent-100 text-accent-700 flex items-center justify-center mb-4">
                   {f.icon}
                 </div>
                 <h3 className="text-base font-semibold mb-2">{f.title}</h3>
-                <p className="text-surface-500 text-sm leading-relaxed">{f.desc}</p>
+                <p className="feature-copy text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
-          </div>
+          </div></div>
         </section>
 
         {/* How It Works */}

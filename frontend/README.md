@@ -1,5 +1,11 @@
 # React + Vite
 
+## Local API development
+
+Run the FastAPI service on `http://localhost:8000` and the frontend with `npm run dev`. The frontend uses `VITE_API_URL` when it is set, and otherwise defaults to the local FastAPI service.
+
+For deployment, set `VITE_API_URL` in the frontend hosting provider to the deployed Render API URL. No frontend code change is required between local development and deployment.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:

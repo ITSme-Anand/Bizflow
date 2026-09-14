@@ -2,167 +2,22 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../lib/api";
 
+const currency = (value) => `₹${Number(value || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const formatDate = (value) => new Date(value).toLocaleDateString(undefined, { day: "numeric", month: "short" });
+
 export default function Dashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    api
-      .get("/api/dashboard")
-      .then((res) => setData(res.data))
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-7 h-7 border-3 border-brand-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  const stats = [
-    {
-      label: "Total Sales",
-      value: `₹${data?.total_sales?.toFixed(2) ?? "0.00"}`,
-      sub: "Revenue generated",
-      color: "text-accent-500",
-    },
-    {
-      label: "Total Expenses",
-      value: `₹${data?.total_expenses?.toFixed(2) ?? "0.00"}`,
-      sub: "Business spending",
-      color: "text-danger",
-    },
-    {
-      label: "Net Profit",
-      value: `₹${data?.profit?.toFixed(2) ?? "0.00"}`,
-      sub: "Sales − Expenses",
-      color: data?.profit >= 0 ? "text-success" : "text-danger",
-    },
-    {
-      label: "Inventory Items",
-      value: data?.inventory_count ?? 0,
-      sub: "Products recorded",
-      color: "text-brand-500",
-    },
-  ];
-
-  const quickActions = [
-    { label: "+ Add Sale", to: "/sales" },
-    { label: "+ Add Expense", to: "/expenses" },
-    { label: "+ Add Product", to: "/inventory" },
-    { label: "View Analysis", to: "/analysis" },
-  ];
-
-  return (
-    <div className="animate-fade-in">
-      {/* Page Header */}
-      <div className="mb-8">
-        <p className="text-brand-500 text-xs font-semibold tracking-widest uppercase mb-2">
-          Business Dashboard
-        </p>
-        <h1 className="text-2xl sm:text-3xl font-bold">
-          Welcome to your <span className="text-brand-500">Dashboard</span>
-        </h1>
-        <p className="text-surface-500 text-sm mt-2 max-w-xl">
-          Manage your sales, expenses, inventory and business performance from one place.
-        </p>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 stagger">
-        {stats.map((s, i) => (
-          <div
-            key={i}
-            className="bg-white rounded-xl p-5 border border-surface-200 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300 animate-fade-in-up"
-          >
-            <p className="text-surface-500 text-sm mb-2">{s.label}</p>
-            <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
-            <p className="text-surface-400 text-xs mt-1">{s.sub}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Quick Actions */}
-      <div className="bg-white rounded-xl p-5 border border-surface-200 shadow-card mb-6">
-        <h3 className="text-base font-semibold mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {quickActions.map((a, i) => (
-            <Link
-              key={i}
-              to={a.to}
-              className="px-4 py-3 text-sm text-center font-medium rounded-lg border border-surface-200 bg-surface-50 hover:bg-accent-50 hover:border-accent-300 hover:text-accent-600 transition-all duration-200"
-            >
-              {a.label}
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom Cards */}
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl p-5 border border-surface-200 shadow-card">
-          <h3 className="text-base font-semibold mb-3">Business Performance</h3>
-          {data?.total_sales > 0 ? (
-            <>
-              <p className="text-surface-500 text-sm leading-relaxed">
-                Your business has recorded{" "}
-                <span className="font-semibold text-surface-800">
-                  ₹{data.total_sales.toFixed(2)}
-                </span>{" "}
-                in sales so far.
-              </p>
-              <p className="text-surface-500 text-sm leading-relaxed mt-2">
-                After expenses, your current profit is{" "}
-                <span className="font-semibold text-surface-800">
-                  ₹{data.profit.toFixed(2)}
-                </span>
-                .
-              </p>
-            </>
-          ) : (
-            <p className="text-surface-400 text-sm">
-              Start recording your sales and expenses to see your business
-              performance here.
-            </p>
-          )}
-        </div>
-
-        <div className="bg-white rounded-xl p-5 border border-surface-200 shadow-card">
-          <h3 className="text-base font-semibold mb-3">Inventory Overview</h3>
-          {data?.inventory_count > 0 ? (
-            <>
-              <p className="text-surface-500 text-sm leading-relaxed">
-                You currently have{" "}
-                <span className="font-semibold text-surface-800">
-                  {data.inventory_count}
-                </span>{" "}
-                product(s) recorded in your inventory.
-              </p>
-              <Link
-                to="/inventory"
-                className="inline-block mt-3 px-4 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 transition-all"
-              >
-                Manage Inventory
-              </Link>
-            </>
-          ) : (
-            <>
-              <p className="text-surface-400 text-sm">
-                No products have been added yet.
-              </p>
-              <Link
-                to="/inventory"
-                className="inline-block mt-3 px-4 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 transition-all"
-              >
-                Add Your First Product
-              </Link>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+  useEffect(() => { api.get("/api/dashboard").then((response) => setData(response.data)).catch(console.error).finally(() => setLoading(false)); }, []);
+  if (loading) return <div className="flex justify-center py-24"><div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-500 border-t-transparent" /></div>;
+  const today = data?.today ? new Date(`${data.today}T12:00:00`) : new Date();
+  const stats = [["Today's sales", currency(data?.total_sales), "Revenue recorded today", "text-brand-600"], ["Today's expenses", currency(data?.total_expenses), "Business spending today", "text-danger"], ["Today's profit", currency(data?.profit), "Sales minus expenses", data?.profit >= 0 ? "text-success" : "text-danger"], ["Current inventory", data?.inventory_count || 0, "Products being tracked", "text-accent-600"]];
+  const activity = [{ title: "Today's sales", items: data?.today_sales, empty: "No sales recorded today.", to: "/sales", amount: "text-brand-600", icon: "S", name: "product_name", date: "sale_date" }, { title: "Today's expenses", items: data?.today_expenses, empty: "No expenses recorded today.", to: "/expenses", amount: "text-danger", icon: "E", name: "expense_name", date: "expense_date" }];
+  return <div className="animate-fade-in">
+    <div className="page-heading"><div><p className="eyebrow">Today at a glance</p><h1>{data?.greeting}, {data?.business_name}.</h1><p>Sales, spending, and stock in one calm view.</p></div><div className="date-chip"><span>{today.toLocaleDateString(undefined, { weekday: "long" })}</span><strong>{today.toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" })}</strong></div></div>
+    <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{stats.map(([label, value, note, color]) => <div className="stat-panel surface-panel" key={label}><p className="stat-label">{label}</p><p className={`stat-value ${color}`}>{value}</p><p className="stat-note">{note}</p></div>)}</div>
+    <div className="mb-6 grid gap-5 lg:grid-cols-2">{activity.map((section) => <section className="surface-panel p-5" key={section.title}><div className="section-title"><h2>{section.title}</h2><Link className="text-xs font-bold text-brand-600 hover:underline" to={section.to}>View all</Link></div>{section.items?.length ? section.items.map((item) => <div className="activity-row" key={item.id}><span className="activity-icon">{section.icon}</span><div className="activity-main"><strong>{item[section.name]}</strong><span>{item.quantity ? `${item.quantity} ${item.unit}` : "Business expense"} · {formatDate(item[section.date])}</span></div><span className={`activity-amount ${section.amount}`}>{currency(item.amount)}</span></div>) : <div className="py-8 text-center text-sm text-surface-400">{section.empty}<br /><Link to={section.to} className="mt-2 inline-block font-semibold text-brand-600">Add one now</Link></div>}</section>)}</div>
+    <section className="pulse surface-panel neutral mb-6"><p className="pulse-status text-brand-600">Bizflow insight</p><h2>{data?.profit > 0 ? "A profitable day is worth protecting." : data?.profit < 0 ? "Today's costs need a closer look." : "Build today's picture."}</h2><p>{data?.profit > 0 ? "Keep recording activity while the numbers are fresh, and use Analysis to compare this period with last month." : data?.profit < 0 ? "Review today's expenses and inventory before making another purchase." : "Add sales and expenses as they happen to get a useful daily signal."}</p></section>
+    <section className="surface-panel p-5"><div className="section-title"><div><h2>Current inventory</h2><span>Products with the lowest stock first</span></div><Link className="text-xs font-bold text-brand-600 hover:underline" to="/inventory">Manage inventory</Link></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">{data?.inventory?.map((item) => <div className="rounded-lg bg-surface-50 p-3" key={item.id}><p className="truncate text-sm font-semibold">{item.product_name}</p><p className={`mt-1 text-xs ${Number(item.quantity) <= 5 ? "text-warning" : "text-surface-500"}`}>{item.quantity} {item.unit} available</p></div>)}{!data?.inventory?.length && <p className="py-4 text-sm text-surface-400">No products added yet.</p>}</div></section>
+  </div>;
 }

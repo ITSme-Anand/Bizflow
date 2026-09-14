@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis - BizFlow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a href="{{ url_for('dashboard') }}" class="brand">
+        Biz<span>Flow</span>
+    </a>
+
+    <nav class="main-nav">
+
+        <a href="{{ url_for('dashboard') }}" class="nav-link">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('sales') }}" class="nav-link">
+            Sales
+        </a>
+
+        <a href="{{ url_for('inventory') }}" class="nav-link">
+            Inventory
+        </a>
+
+        <a href="{{ url_for('expenses') }}" class="nav-link">
+            Expenses
+        </a>
+
+        <a href="{{ url_for('analysis') }}" class="nav-link active">
+            Analysis
+        </a>
+
+    </nav>
+
+    <div class="nav-right">
+
+        <a href="{{ url_for('profile') }}" class="profile-btn">
+            <span class="profile-icon">P</span>
+            <span>Profile</span>
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="analysis-page">
+
+    <!-- PAGE HEADER -->
+
+    <section class="analysis-header">
+
+        <div>
+
+            <p class="analysis-eyebrow">
+                BUSINESS ANALYSIS
+            </p>
+
+            <h1>
+                Understand Your
+                <span>Business</span>
+            </h1>
+
+            <p class="analysis-description">
+                See your business performance month by month
+                and make better decisions from your records.
+            </p>
+
+        </div>
+
+
+        <div class="analysis-month-badge">
+
+            <span class="analysis-month-label">
+                CURRENT PERIOD
+            </span>
+
+            <strong>
+
+                {% if current_month == 1 %}
+                    January
+                {% elif current_month == 2 %}
+                    February
+                {% elif current_month == 3 %}
+                    March
+                {% elif current_month == 4 %}
+                    April
+                {% elif current_month == 5 %}
+                    May
+                {% elif current_month == 6 %}
+                    June
+                {% elif current_month == 7 %}
+                    July
+                {% elif current_month == 8 %}
+                    August
+                {% elif current_month == 9 %}
+                    September
+                {% elif current_month == 10 %}
+                    October
+                {% elif current_month == 11 %}
+                    November
+                {% else %}
+                    December
+                {% endif %}
+
+            </strong>
+
+            <span>
+                {{ current_year }}
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- CURRENT MONTH SUMMARY -->
+
+    <section class="analysis-summary-grid">
+
+
+        <!-- SALES -->
+
+        <div class="analysis-summary-card">
+
+            <div class="analysis-card-top">
+
+                <span class="analysis-card-icon">
+                    ₹
+                </span>
+
+                <span class="analysis-card-label">
+                    SALES
+                </span>
+
+            </div>
+
+            <h2>
+                ₹{{ "%.2f"|format(current_month_sales|float) }}
+            </h2>
+
+            <p>
+                Revenue generated this month
+            </p>
+
+        </div>
+
+
+        <!-- EXPENSES -->
+
+        <div class="analysis-summary-card">
+
+            <div class="analysis-card-top">
+
+                <span class="analysis-card-icon">
+                    E
+                </span>
+
+                <span class="analysis-card-label">
+                    EXPENSES
+                </span>
+
+            </div>
+
+            <h2>
+                ₹{{ "%.2f"|format(current_month_expenses|float) }}
+            </h2>
+
+            <p>
+                Business spending this month
+            </p>
+
+        </div>
+
+
+        <!-- PROFIT -->
+
+        <div class="analysis-summary-card profit-summary-card">
+
+            <div class="analysis-card-top">
+
+                <span class="analysis-card-icon">
+                    P
+                </span>
+
+                <span class="analysis-card-label">
+                    NET PROFIT
+                </span>
+
+            </div>
+
+            <h2>
+                ₹{{ "%.2f"|format(current_month_profit|float) }}
+            </h2>
+
+            <p>
+                Sales minus expenses
+            </p>
+
+        </div>
+
+
+        <!-- PROFIT MARGIN -->
+
+        <div class="analysis-summary-card">
+
+            <div class="analysis-card-top">
+
+                <span class="analysis-card-icon">
+                    %
+                </span>
+
+                <span class="analysis-card-label">
+                    PROFIT MARGIN
+                </span>
+
+            </div>
+
+            <h2 id="profitMargin">
+                0%
+            </h2>
+
+            <p>
+                Profit earned from sales
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- GRAPH + SMART INSIGHT -->
+
+    <section class="analysis-main-grid">
+
+
+        <!-- MONTHLY GRAPH -->
+
+        <div class="analysis-panel graph-panel">
+
+            <div class="analysis-panel-header">
+
+                <div>
+
+                    <p class="panel-eyebrow">
+                        PERFORMANCE TREND
+                    </p>
+
+                    <h2>
+                        Monthly Performance
+                    </h2>
+
+                </div>
+
+                <span class="graph-note">
+                    Sales vs Expenses
+                </span>
+
+            </div>
+
+
+            <div class="chart-area">
+
+                {% if monthly_reports %}
+
+                    <div class="chart-bars">
+
+                        {% for report in monthly_reports|reverse %}
+
+                            <div class="chart-column">
+
+                                <div class="chart-values">
+
+                                    <span>
+                                        ₹{{ "%.0f"|format(report.sales_total|float) }}
+                                    </span>
+
+                                    <span>
+                                        ₹{{ "%.0f"|format(report.expenses_total|float) }}
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bars">
+
+                                    <div class="bar sales-bar">
+                                    </div>
+
+                                    <div class="bar expenses-bar">
+                                    </div>
+
+                                </div>
+
+
+                                <div class="chart-month">
+
+                                    {% if report.month == 1 %}
+                                        Jan
+                                    {% elif report.month == 2 %}
+                                        Feb
+                                    {% elif report.month == 3 %}
+                                        Mar
+                                    {% elif report.month == 4 %}
+                                        Apr
+                                    {% elif report.month == 5 %}
+                                        May
+                                    {% elif report.month == 6 %}
+                                        Jun
+                                    {% elif report.month == 7 %}
+                                        Jul
+                                    {% elif report.month == 8 %}
+                                        Aug
+                                    {% elif report.month == 9 %}
+                                        Sep
+                                    {% elif report.month == 10 %}
+                                        Oct
+                                    {% elif report.month == 11 %}
+                                        Nov
+                                    {% else %}
+                                        Dec
+                                    {% endif %}
+
+                                    {{ report.year }}
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="chart-empty">
+
+                        <div class="chart-empty-icon">
+                            —
+                        </div>
+
+                        <h3>
+                            No monthly data yet
+                        </h3>
+
+                        <p>
+                            Add sales and expenses to start
+                            seeing your business performance here.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="chart-legend">
+
+                <span>
+                    <i class="legend-dot sales-dot"></i>
+                    Sales
+                </span>
+
+                <span>
+                    <i class="legend-dot expense-dot"></i>
+                    Expenses
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- SMART INSIGHT -->
+
+        <div class="analysis-panel insight-panel">
+
+            <div class="insight-heading">
+
+                <div class="insight-icon">
+                    ✦
+                </div>
+
+                <div>
+
+                    <p class="panel-eyebrow">
+                        SMART INSIGHT
+                    </p>
+
+                    <h2>
+                        Business Pulse
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="insight-content">
+
+                {% if current_month_sales|float > 0 %}
+
+                    {% if current_month_profit|float > 0 %}
+
+                        <div class="insight-status positive">
+                            Positive
+                        </div>
+
+                        <h3>
+                            Your business is currently profitable.
+                        </h3>
+
+                        <p>
+                            Your recorded sales are higher than your
+                            expenses for this month. Keep monitoring
+                            your spending while maintaining your sales.
+                        </p>
+
+                    {% elif current_month_profit|float < 0 %}
+
+                        <div class="insight-status warning">
+                            Attention
+                        </div>
+
+                        <h3>
+                            Expenses are higher than sales.
+                        </h3>
+
+                        <p>
+                            Your current recorded spending is above
+                            your revenue. Review your expenses and
+                            identify areas where costs can be controlled.
+                        </p>
+
+                    {% else %}
+
+                        <div class="insight-status neutral">
+                            Balanced
+                        </div>
+
+                        <h3>
+                            Your sales and expenses are balanced.
+                        </h3>
+
+                        <p>
+                            Your recorded revenue currently matches
+                            your recorded business expenses.
+                        </p>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <div class="insight-status neutral">
+                        Getting Started
+                    </div>
+
+                    <h3>
+                        Start recording your business activity.
+                    </h3>
+
+                    <p>
+                        Once you record sales and expenses,
+                        BizFlow will begin generating useful
+                        performance insights.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="insight-footer">
+
+                <span>
+                    Based on your current month's records
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MONTHLY REPORTS -->
+
+    <section class="monthly-section">
+
+        <div class="monthly-section-header">
+
+            <div>
+
+                <p class="analysis-eyebrow">
+                    HISTORY
+                </p>
+
+                <h2>
+                    Monthly Reports
+                </h2>
+
+                <p>
+                    Select a month to view its detailed
+                    sales and expense analysis.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="monthly-list">
+
+            {% if monthly_reports %}
+
+                {% for report in monthly_reports %}
+
+                    {% if not (report.year == current_year and report.month == current_month) %}
+
+                        <a
+                            href="{{ url_for('analysis_detail', year=report.year, month=report.month) }}"
+                            class="monthly-report-card"
+                        >
+
+                            <div class="monthly-report-date">
+
+                                <span>
+
+                                    {% if report.month == 1 %}
+                                        January
+                                    {% elif report.month == 2 %}
+                                        February
+                                    {% elif report.month == 3 %}
+                                        March
+                                    {% elif report.month == 4 %}
+                                        April
+                                    {% elif report.month == 5 %}
+                                        May
+                                    {% elif report.month == 6 %}
+                                        June
+                                    {% elif report.month == 7 %}
+                                        July
+                                    {% elif report.month == 8 %}
+                                        August
+                                    {% elif report.month == 9 %}
+                                        September
+                                    {% elif report.month == 10 %}
+                                        October
+                                    {% elif report.month == 11 %}
+                                        November
+                                    {% else %}
+                                        December
+                                    {% endif %}
+
+                                </span>
+
+                                <strong>
+                                    {{ report.year }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="monthly-report-stat">
+
+                                <span>
+                                    SALES
+                                </span>
+
+                                <strong>
+                                    ₹{{ "%.2f"|format(report.sales_total|float) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="monthly-report-stat">
+
+                                <span>
+                                    EXPENSES
+                                </span>
+
+                                <strong>
+                                    ₹{{ "%.2f"|format(report.expenses_total|float) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="monthly-report-stat">
+
+                                <span>
+                                    PROFIT
+                                </span>
+
+                                <strong
+                                    class="report-profit"
+                                    data-sales="{{ report.sales_total|float }}"
+                                    data-expenses="{{ report.expenses_total|float }}"
+                                >
+                                    ₹0.00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="monthly-report-arrow">
+                                →
+                            </div>
+
+                        </a>
+
+                    {% endif %}
+
+                {% endfor %}
+
+
+                <!-- CURRENT MONTH -->
+
+                <a
+                    href="{{ url_for('analysis_detail', year=current_year, month=current_month) }}"
+                    class="monthly-report-card current-month-report"
+                >
+
+                    <div class="monthly-report-date">
+
+                        <span>
+
+                            {% if current_month == 1 %}
+                                January
+                            {% elif current_month == 2 %}
+                                February
+                            {% elif current_month == 3 %}
+                                March
+                            {% elif current_month == 4 %}
+                                April
+                            {% elif current_month == 5 %}
+                                May
+                            {% elif current_month == 6 %}
+                                June
+                            {% elif current_month == 7 %}
+                                July
+                            {% elif current_month == 8 %}
+                                August
+                            {% elif current_month == 9 %}
+                                September
+                            {% elif current_month == 10 %}
+                                October
+                            {% elif current_month == 11 %}
+                                November
+                            {% else %}
+                                December
+                            {% endif %}
+
+                        </span>
+
+                        <strong>
+                            {{ current_year }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="monthly-report-stat">
+
+                        <span>
+                            SALES
+                        </span>
+
+                        <strong>
+                            ₹{{ "%.2f"|format(current_month_sales|float) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="monthly-report-stat">
+
+                        <span>
+                            EXPENSES
+                        </span>
+
+                        <strong>
+                            ₹{{ "%.2f"|format(current_month_expenses|float) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="monthly-report-stat">
+
+                        <span>
+                            PROFIT
+                        </span>
+
+                        <strong
+                            class="report-profit current-report-profit"
+                            data-sales="{{ current_month_sales|float }}"
+                            data-expenses="{{ current_month_expenses|float }}"
+                        >
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="monthly-report-arrow">
+                        →
+                    </div>
+
+                </a>
+
+            {% else %}
+
+                <div class="monthly-empty">
+
+                    <h3>
+                        No monthly reports yet
+                    </h3>
+
+                    <p>
+                        Your monthly reports will appear here
+                        once you start recording transactions.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <section class="analysis-actions">
+
+        <div>
+
+            <p class="analysis-eyebrow">
+                KEEP YOUR DATA UPDATED
+            </p>
+
+            <h2>
+                Keep your analysis accurate
+            </h2>
+
+            <p>
+                Regularly record your sales and expenses so
+                BizFlow can give you a clearer picture of your business.
+            </p>
+
+        </div>
+
+
+        <div class="analysis-action-buttons">
+
+            <a
+                href="{{ url_for('sales') }}"
+                class="analysis-primary-btn"
+            >
+                Add Sale
+            </a>
+
+            <a
+                href="{{ url_for('expenses') }}"
+                class="analysis-secondary-btn"
+            >
+                Add Expense
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- CALCULATIONS -->
+
+<script>
+
+    /* PROFIT MARGIN */
+
+    const currentSales = Number(
+        "{{ current_month_sales|float }}"
+    );
+
+    const currentProfit = Number(
+        "{{ current_month_profit|float }}"
+    );
+
+    let profitMargin = 0;
+
+    if (currentSales > 0) {
+        profitMargin = (currentProfit / currentSales) * 100;
+    }
+
+    document.getElementById("profitMargin").textContent =
+        profitMargin.toFixed(1) + "%";
+
+
+    /* MONTHLY GRAPH */
+
+    document.querySelectorAll(".chart-column").forEach(function(column) {
+
+        const values = column.querySelectorAll(".chart-values span");
+
+        const salesBar = column.querySelector(".sales-bar");
+        const expensesBar = column.querySelector(".expenses-bar");
+
+        if (values.length < 2) {
+            return;
+        }
+
+        const sales = Number(
+            values[0].textContent.replace(/[₹,]/g, "")
+        ) || 0;
+
+        const expenses = Number(
+            values[1].textContent.replace(/[₹,]/g, "")
+        ) || 0;
+
+        const maximum = Math.max(sales, expenses, 1);
+
+        salesBar.style.height =
+            ((sales / maximum) * 100) + "%";
+
+        expensesBar.style.height =
+            ((expenses / maximum) * 100) + "%";
+
+    });
+
+
+    /* MONTHLY REPORT PROFITS */
+
+    document.querySelectorAll(".report-profit").forEach(function(item) {
+
+        const sales = Number(
+            item.getAttribute("data-sales")
+        ) || 0;
+
+        const expenses = Number(
+            item.getAttribute("data-expenses")
+        ) || 0;
+
+        const profit = sales - expenses;
+
+        item.textContent =
+            "₹" + profit.toFixed(2);
+
+        if (profit > 0) {
+            item.classList.add("report-profit-positive");
+        }
+        else if (profit < 0) {
+            item.classList.add("report-profit-negative");
+        }
+
+    });
+
+</script>
+
+
+</body>
+</html>

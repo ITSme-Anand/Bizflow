@@ -11,6 +11,7 @@ import Sales from "./pages/Sales";
 import Expenses from "./pages/Expenses";
 import Inventory from "./pages/Inventory";
 import Analysis from "./pages/Analysis";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/analysis" element={<Analysis />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import dashboard, sales, expenses, inventory, analysis
+from app.routers import dashboard, sales, expenses, inventory, analysis, profile
 
 app = FastAPI(
     title="Bizflow API",
@@ -28,6 +28,7 @@ app.include_router(sales.router, prefix="/api", tags=["Sales"])
 app.include_router(expenses.router, prefix="/api", tags=["Expenses"])
 app.include_router(inventory.router, prefix="/api", tags=["Inventory"])
 app.include_router(analysis.router, prefix="/api", tags=["Analysis"])
+app.include_router(profile.router, prefix="/api", tags=["Profile"])
 
 
 @app.get("/")

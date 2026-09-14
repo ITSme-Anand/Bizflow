@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Profile - BizFlow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =========================================================
+           PROFILE PAGE
+           ========================================================= */
+
+        .profile-page {
+            width: 89%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 50px 0 70px;
+        }
+
+
+        /* =========================================================
+           PROFILE HEADER
+           ========================================================= */
+
+        .profile-header {
+            margin-bottom: 30px;
+        }
+
+        .profile-header h1 {
+            font-size: 34px;
+            color: #191a1e;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .profile-header p {
+            color: #777983;
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           PROFILE LAYOUT
+           ========================================================= */
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+        }
+
+
+        /* =========================================================
+           CARDS
+           ========================================================= */
+
+        .profile-card,
+        .account-card {
+            background: #ffffff;
+            border: 1px solid #e9e9ef;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(30, 30, 60, 0.045);
+        }
+
+
+        /* =========================================================
+           PROFILE SUMMARY
+           ========================================================= */
+
+        .profile-card {
+            padding: 30px 24px;
+            text-align: center;
+        }
+
+        .large-profile-icon {
+            width: 78px;
+            height: 78px;
+
+            margin: 0 auto 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #f1efff;
+            color: #7163d6;
+
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .profile-card h2 {
+            color: #292a30;
+            font-size: 19px;
+            margin-bottom: 6px;
+        }
+
+        .profile-card p {
+            color: #92949e;
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           ACCOUNT INFORMATION
+           ========================================================= */
+
+        .account-card {
+            padding: 30px;
+        }
+
+        .account-card-header {
+            margin-bottom: 25px;
+        }
+
+        .account-card-header p {
+            color: #7163d6;
+            font-size: 9px;
+            font-weight: 750;
+            letter-spacing: 1.6px;
+            margin-bottom: 6px;
+        }
+
+        .account-card-header h2 {
+            color: #292a30;
+            font-size: 20px;
+        }
+
+
+        /* =========================================================
+           PROFILE FIELDS
+           ========================================================= */
+
+        .profile-field {
+            padding: 17px 0;
+            border-bottom: 1px solid #eeeef3;
+        }
+
+        .profile-field:last-of-type {
+            border-bottom: none;
+        }
+
+        .profile-field label {
+            display: block;
+
+            color: #999ba5;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 0.8px;
+
+            margin-bottom: 7px;
+        }
+
+        .profile-field span {
+            color: #303139;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            color: #4d9a68 !important;
+        }
+
+
+        /* =========================================================
+           ACTION BUTTONS
+           ========================================================= */
+
+        .profile-actions {
+            margin-top: 25px;
+
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .profile-action-btn {
+            display: inline-block;
+
+            padding: 10px 16px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 650;
+
+            transition: 0.2s ease;
+        }
+
+        .profile-action-primary {
+            background: #7163d6;
+            color: #ffffff;
+        }
+
+        .profile-action-primary:hover {
+            transform: translateY(-1px);
+            opacity: 0.92;
+        }
+
+        .profile-action-secondary {
+            background: #f1efff;
+            color: #7163d6;
+        }
+
+        .profile-action-secondary:hover {
+            background: #e8e5ff;
+        }
+
+
+        /* =========================================================
+           MOBILE
+           ========================================================= */
+
+        @media (max-width: 700px) {
+
+            .profile-page {
+                width: 92%;
+                padding-top: 32px;
+            }
+
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header h1 {
+                font-size: 28px;
+            }
+
+            .account-card {
+                padding: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVIGATION
+     ========================================================= -->
+
+<header class="topbar">
+
+    <a href="{{ url_for('dashboard') }}" class="brand">
+        Biz<span>Flow</span>
+    </a>
+
+
+    <nav class="main-nav">
+
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-link">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('sales') }}"
+           class="nav-link">
+            Sales
+        </a>
+
+        <a href="{{ url_for('inventory') }}"
+           class="nav-link">
+            Inventory
+        </a>
+
+        <a href="{{ url_for('expenses') }}"
+           class="nav-link">
+            Expenses
+        </a>
+
+        <a href="{{ url_for('analysis') }}"
+           class="nav-link">
+            Analysis
+        </a>
+
+    </nav>
+
+
+    <div class="nav-right">
+
+        <a href="{{ url_for('profile') }}"
+           class="profile-btn">
+
+            <span class="profile-icon">P</span>
+
+            <span>
+                Profile
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('logout') }}"
+           class="logout-btn">
+
+            Logout
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     PROFILE
+     ========================================================= -->
+
+<main class="profile-page">
+
+
+    <section class="profile-header">
+
+        <h1>
+            Your Profile
+        </h1>
+
+        <p>
+            Manage your BizFlow account information.
+        </p>
+
+    </section>
+
+
+
+    <section class="profile-layout">
+
+
+        <!-- =====================================================
+             PROFILE SUMMARY
+             ===================================================== -->
+
+        <div class="profile-card">
+
+            <div class="large-profile-icon">
+
+                {{ business_name[0]|upper }}
+
+            </div>
+
+
+            <h2>
+
+                {{ business_name }}
+
+            </h2>
+
+
+            <p>
+
+                BizFlow Business Account
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             ACCOUNT INFORMATION
+             ===================================================== -->
+
+        <div class="account-card">
+
+
+            <div class="account-card-header">
+
+                <p>
+                    ACCOUNT INFORMATION
+                </p>
+
+                <h2>
+                    Business Details
+                </h2>
+
+            </div>
+
+
+
+            <div class="profile-field">
+
+                <label>
+                    BUSINESS NAME
+                </label>
+
+                <span>
+                    {{ business_name }}
+                </span>
+
+            </div>
+
+
+
+            <div class="profile-field">
+
+                <label>
+                    EMAIL ADDRESS
+                </label>
+
+                <span>
+                    {{ email }}
+                </span>
+
+            </div>
+
+
+
+            <div class="profile-field">
+
+                <label>
+                    ACCOUNT STATUS
+                </label>
+
+                <span class="status-active">
+                    Active
+                </span>
+
+            </div>
+
+
+
+            <div class="profile-actions">
+
+                <a href="{{ url_for('dashboard') }}"
+                   class="profile-action-btn profile-action-primary">
+
+                    Back to Dashboard
+
+                </a>
+
+
+                <a href="{{ url_for('logout') }}"
+                   class="profile-action-btn profile-action-secondary">
+
+                    Logout
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>
