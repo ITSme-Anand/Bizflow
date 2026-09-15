@@ -1,4 +1,5 @@
-from datetime import date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends
 from app.dependencies import get_current_user
@@ -44,7 +45,7 @@ async def get_dashboard(user_id: str = Depends(get_current_user)):
     today = date.today()
     profile_resp = supabase.table("profiles").select("business_name").eq("id", user_id).single().execute()
     business_name = (profile_resp.data or {}).get("business_name", "your business")
-    hour = __import__("datetime").datetime.now().hour
+    hour = datetime.now(ZoneInfo("Asia/Kolkata")).hour
     greeting = "Good morning" if 5 <= hour < 12 else "Good afternoon" if 12 <= hour < 17 else "Good evening"
     today_sales = [row for row in sales if row_date(row, "sale_date") == today]
     today_expenses = [row for row in expenses if row_date(row, "expense_date") == today]
