@@ -42,26 +42,26 @@ export default function Expenses() {
       {/* Header */}
       <div className="page-heading">
         <div><p className="eyebrow">
-          Expense Management
+          Expense/Cost Management
         </p><h1>Keep spending in view.</h1><p>
           Record and monitor your business spending in one place.
         </p></div>
       </div>
 
       {/* Add Expense Form */}
-      <div className="form-panel surface-panel mb-6"><h2>Add New Expense</h2>
+      <div className="form-panel surface-panel mb-6"><h2>Add New Expense/Cost</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="form-label">
-                Expense Name
+                Expense/Cost Name
               </label>
               <input
                 type="text"
                 value={form.expense_name}
                 onChange={(e) => setForm({ ...form, expense_name: e.target.value })}
-                placeholder="Enter expense name"
+                placeholder="Enter expense/cost name"
                 required
                 className="form-input"
               />
@@ -75,7 +75,7 @@ export default function Expenses() {
                 type="number"
                 value={form.amount}
                 onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                placeholder="Enter expense amount"
+                placeholder="Enter expense/cost amount"
                 min="0"
                 step="0.01"
                 required
@@ -95,7 +95,7 @@ export default function Expenses() {
       </div>
 
       {/* Expenses List */}
-      <div className="surface-panel p-5 sm:p-6"><div className="section-title"><h2>Recent Expenses</h2><span>Newest first</span></div>
+      <div className="surface-panel p-5 sm:p-6"><div className="section-title"><h2>Recent Expenses/Costs</h2><span>Newest first</span></div>
 
         {loading ? (
           <div className="flex justify-center py-8">
